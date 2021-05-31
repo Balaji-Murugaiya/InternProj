@@ -1,5 +1,6 @@
 package com.internproject.notificationsystem.controller;
 
+import com.internproject.notificationsystem.model.LoginDTO;
 import com.internproject.notificationsystem.model.User;
 import com.internproject.notificationsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +20,13 @@ public class UserController {
     @PostMapping("/register")
     void register(@RequestBody User user)
     {
-        System.out.println(user);
-        user.setEmail_ID("xyz@gmail.com");
-        System.out.println(user);
-        userservice.save(user);
+
+        userservice.register(user);
     }
 
-    @GetMapping("/seeuser")
-    List<User> seeUSer()
-    {
-        return userservice.getAll() ;
+    @PostMapping("/login")
+    User login(@RequestBody LoginDTO logindto) throws Exception {
+        return userservice.login(logindto) ;
     }
 
 }
