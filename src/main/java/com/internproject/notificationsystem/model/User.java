@@ -19,23 +19,23 @@ public class User {
 
 
 
-    @Column
+    @Column(nullable = false , unique = true)
     private String Email_ID ;
 
 
-    @Column
+    @Column(nullable = false)
     private String User_Name;
 
-    @Column
+    @Column(nullable = false)
     private String Password ;
 
-    @Column
+    @Column(nullable = false)
     private String Gender ;
 
-    @Column
+    @Column(nullable = false)
     private long Phone_Number ;
 
-    @Column
+    @Column(nullable = true)
     private String Description ;
 
     @Column

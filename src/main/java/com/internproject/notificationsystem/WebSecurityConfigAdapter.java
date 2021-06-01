@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class WebSecurityConfigAdapter extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        super.configure(auth);
+        auth.authenticationProvider();
     }
+
 }

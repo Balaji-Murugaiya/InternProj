@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
-public class CustomUserDetails extends UserDetails {
+public class CustomUserDetails implements UserDetails {
 
     private User user ;
 
@@ -49,6 +49,11 @@ public class CustomUserDetails extends UserDetails {
         return user.getPassword();
     }
 
+    public String getname()
+    {
+        return user.getUser_Name()
+    }
+
     public String getDescription()
     {
         return user.getDescription() ;
@@ -56,11 +61,11 @@ public class CustomUserDetails extends UserDetails {
 
     public String getGender()
     {
-        user.getGender() ;
+        return user.getGender() ;
     }
 
-    public String getPhoneNumber()
+    public long getPhoneNumber()
     {
-        user.getPhone_Number() ;
+        return user.getPhone_Number() ;
     }
 }
