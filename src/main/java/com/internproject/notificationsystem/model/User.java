@@ -1,6 +1,7 @@
 package com.internproject.notificationsystem.model;
 
 
+import com.internproject.notificationsystem.DTO.UserData;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,36 +12,29 @@ import javax.persistence.*;
 @Setter
 @Entity
 public class User {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long uID ;
+    private String userName ;
+    @Column(unique = true)
+    private String emailID ;
+    private String password ;
+    private String gender ;
+    private String phoneNumber ;
+    private String description ;
+    private final boolean activityStatus = true ;
 
-    @Id
-    @Column
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
-    private Long UID ;
-
-
-
-    @Column(nullable = false , unique = true)
-    private String Email_ID ;
-
-
-    @Column(nullable = false)
-    private String User_Name;
-
-    @Column(nullable = false)
-    private String Password ;
-
-    @Column(nullable = false)
-    private String Gender ;
-
-    @Column(nullable = false)
-    private long Phone_Number ;
-
-    @Column(nullable = true)
-    private String Description ;
-
-    @Column
-    private String Activity_Status ;
+    public User(UserData userData)
+    {
+        this.setPassword(userData.getPassword());
+        this.setUserName(userData.getUserName());
+        this.setEmailID(userData.getEmailID());
+        this.setGender(userData.getGender());
+        this.setDescription(userData.getDescription());
+        this.setPhoneNumber(userData.getPhoneNumber());
+    }
 
 
+    public User() {
 
+    }
 }
