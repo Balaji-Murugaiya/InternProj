@@ -4,6 +4,8 @@ plugins {
     id 'java'
 }
 
+
+
 group = 'com.InternProject'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
@@ -22,8 +24,12 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    compile 'org.springframework.session:spring-session-data-redis'
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+
 }
 
 
