@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.security.auth.login.CredentialException;
 import javax.security.auth.message.AuthException;
+import java.io.IOException;
 import java.net.http.HttpResponse;
 
 @Service
@@ -26,7 +27,7 @@ public class UserService {
     @Autowired
     UserRepository userRepository ;
 
-    public void register(UserData userData)
+    public void register(UserData userData) throws IOException
     {
         userData.setPassword(passwordEncoder.encode(userData.getPassword()));
         User newUser = new User(userData) ;
