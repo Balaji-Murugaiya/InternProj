@@ -4,19 +4,21 @@ import com.internproject.notificationsystem.DTO.LoginData;
 import com.internproject.notificationsystem.DTO.UserData;
 import com.internproject.notificationsystem.model.User;
 import com.internproject.notificationsystem.repository.UserRepository;
-import javassist.NotFoundException;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.security.auth.login.CredentialException;
-import javax.security.auth.message.AuthException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.net.http.HttpResponse;
+
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+
 
 @Service
 public class UserService {
@@ -27,6 +29,14 @@ public class UserService {
     @Autowired
     UserRepository userRepository ;
 
+    @Autowired
+    LocationDetailsService locationDetailsService ;
+
+    @Autowired
+    RequestServiceImpl requestService ;
+
+    private GeoIP geoIP ;
+
     public void register(UserData userData) throws IOException
     {
         userData.setPassword(passwordEncoder.encode(userData.getPassword()));
@@ -35,7 +45,7 @@ public class UserService {
 
     }
 
-    public String login(LoginData loginData) throws Exception
+    public void login(LoginData loginData  , HttpServletRequest request) throws Exception
     {
 
         User user = userRepository.findByEmail(loginData.getEmailID());
@@ -45,9 +55,34 @@ public class UserService {
         }
         if(!(passwordEncoder.matches(loginData.getPassword(), user.getPassword())))
         {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            throw new ResponseStatusException(UNAUTHORIZED);
+
+
 
         }
-        return user.getDescription() ;
+        HttpSession httpSession = request.getSession() ;
+        httpSession.setAttribute("emailID",loginData.getEmailID());
+        geoIP = locationDetailsService.getLocation(requestService.getClientIp(request)) ;
+        httpSession.setAttribute("ipAddress" , geoIP.getIpAddress());
+        httpSession.setAttribute("City",geoIP.getCity());
+        httpSession.setAttribute("Latitude",geoIP.getLatitude());
+        httpSession.setAttribute("Longitude",geoIP.getLongitude());
+    }
+
+    public String currentUser(HttpServletRequest request) throws Exception
+    {
+        HttpSession session = request.getSession();
+        String emailID =  (String)session.getAttribute("emailID") ;
+        if(emailID == null)
+            throw new AuthorizationServiceException("unauthorized");
+        User currentUserDetails =  userRepository.findByEmail(emailID) ;
+        return currentUserDetails.toString() ;
+    }
+
+    public String logout(HttpServletRequest request)
+    {
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return "logout successful" ;
     }
 }

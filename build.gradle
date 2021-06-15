@@ -28,6 +28,8 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    // https://mvnrepository.com/artifact/com.maxmind.geoip2/geoip2
+    implementation group: 'com.maxmind.geoip2', name: 'geoip2', version: '2.3.1'
 
 
 }

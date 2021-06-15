@@ -2,6 +2,7 @@ package com.internproject.notificationsystem.ControllerAdvice;
 
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -31,6 +32,13 @@ public class UserControllerAdvice {
     public ErrorResponse failedAuthentication(Exception ex)
     {
         return new ErrorResponse(401 , "Password is wrong") ;
+    }
+
+    @ExceptionHandler(value={AuthorizationServiceException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse unauthorizedRequest(Exception ex)
+    {
+        return new ErrorResponse(401,"Unauthorized request") ;
     }
 
 

@@ -37,4 +37,11 @@ public class User {
     public User() {
 
     }
+
+    @Override
+    public String toString() {
+        return "Email ID:" + emailID + "\n" + "Name:" + userName + "\n" +
+                "Phone number:" + phoneNumber+ "\n" + "gender:" + gender + "\n" +
+                "Description:" + description + "\n" ;
+    }
 }
