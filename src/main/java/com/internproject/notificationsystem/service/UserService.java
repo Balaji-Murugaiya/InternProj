@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -56,9 +57,6 @@ public class UserService {
         if(!(passwordEncoder.matches(loginData.getPassword(), user.getPassword())))
         {
             throw new ResponseStatusException(UNAUTHORIZED);
-
-
-
         }
         HttpSession httpSession = request.getSession() ;
         httpSession.setAttribute("emailID",loginData.getEmailID());
@@ -79,10 +77,10 @@ public class UserService {
         return currentUserDetails.toString() ;
     }
 
-    public String logout(HttpServletRequest request)
+    public RedirectView logout(HttpServletRequest request)
     {
         HttpSession session = request.getSession();
         session.invalidate();
-        return "logout successful" ;
+        return new RedirectView("index.html") ;
     }
 }
