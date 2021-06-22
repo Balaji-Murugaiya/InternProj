@@ -5,6 +5,8 @@ import com.internproject.notificationsystem.service.GeoIP;
 import com.internproject.notificationsystem.service.LocationDetailsService;
 import com.internproject.notificationsystem.service.RequestServiceImpl;
 import com.internproject.notificationsystem.service.UserService;
+import org.jasypt.util.text.BasicTextEncryptor;
+import org.jasypt.util.text.TextEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
@@ -35,9 +37,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public void login(@RequestBody LoginData loginData , HttpServletRequest request) throws Exception
+    public String login(@RequestBody LoginData loginData , HttpServletRequest request) throws Exception
     {
-        userService.login(loginData, request)  ;
+        return userService.login(loginData, request)  ;
     }
 
     @GetMapping("/currentUser")
@@ -52,7 +54,11 @@ public class UserController {
         return userService.logout(request);
     }
 
-
+    @GetMapping(value = "/lo/**")
+    public void lo(HttpServletRequest request)
+    {
+        userService.logoutFromMail(request);
+    }
 
 
 
